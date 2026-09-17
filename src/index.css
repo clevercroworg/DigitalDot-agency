@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page: #FBFBFC;
+    --text-primary: #0F172A;
+    --text-muted: #64748B;
+    --border-hairline: rgba(0, 0, 0, 0.07);
+  }
+
+  body {
+    background-color: #FBFBFC;
+    color: #0F172A;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+    letter-spacing: -0.012em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.03em;
+    color: #0F172A;
+  }
+
+  /* Light subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #FBFBFC;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+  }
+}
+
+@layer utilities {
+  .subtle-card {
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+  }
+
+  .subtle-card:hover {
+    border-color: rgba(0, 0, 0, 0.14);
+    box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.07);
+  }
+}
