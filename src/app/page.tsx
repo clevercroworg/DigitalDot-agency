@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
-import { AnnouncementBar } from './components/AnnouncementBar';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { SocialProof } from './components/SocialProof';
-import { PartnershipFramework } from './components/PartnershipFramework';
-import { CorePillars } from './components/CorePillars';
-import { CaseStudies } from './components/CaseStudies';
-import { MarginCalculator } from './components/MarginCalculator';
-import { CapabilitiesGrid } from './components/CapabilitiesGrid';
-import { FAQSection } from './components/FAQSection';
-import { LeadMagnetCTA } from './components/LeadMagnetCTA';
-import { Footer } from './components/Footer';
-import { PartnerDeckModal } from './components/PartnerDeckModal';
+'use client';
 
-export const App: React.FC = () => {
+import React, { useState } from 'react';
+import { AnnouncementBar } from '../components/AnnouncementBar';
+import { Header } from '../components/Header';
+import { Hero } from '../components/Hero';
+import { SocialProof } from '../components/SocialProof';
+import { PartnershipFramework } from '../components/PartnershipFramework';
+import { CorePillars } from '../components/CorePillars';
+import { CaseStudies } from '../components/CaseStudies';
+import { MarginCalculator } from '../components/MarginCalculator';
+import { CapabilitiesGrid } from '../components/CapabilitiesGrid';
+import { FAQSection } from '../components/FAQSection';
+import { LeadMagnetCTA } from '../components/LeadMagnetCTA';
+import { Footer } from '../components/Footer';
+import { PartnerDeckModal } from '../components/PartnerDeckModal';
+
+export default function HomePage() {
   const [currentMode, setMode] = useState<'agency' | 'enterprise'>('agency');
   const [deckModalOpen, setDeckModalOpen] = useState(false);
 
@@ -42,7 +44,7 @@ export const App: React.FC = () => {
         {/* 6. 4 Core Value Propositions & Technical Pillars */}
         <CorePillars />
 
-        {/* 7. Case Studies & Verified Testimonials (With Real Photography) */}
+        {/* 7. Case Studies & Verified Testimonials */}
         <CaseStudies />
 
         {/* Interactive Agency Margin Arbitrage Calculator */}
@@ -68,6 +70,4 @@ export const App: React.FC = () => {
       />
     </div>
   );
-};
-
-export default App;
+}
