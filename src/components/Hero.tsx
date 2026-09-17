@@ -337,11 +337,7 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
                 className="w-full rounded-xl object-cover object-top h-[260px] sm:h-[320px] lg:h-[370px]"
               />
 
-              {/* Overlay Glass Badges - Static indicator, no blinking */}
-              <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-white/25 shadow-lg text-[11px] font-semibold text-white">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span>Unbranded Client Portal</span>
-              </div>
+              {/* Overlay Glass Badges */}
 
               <div className="absolute bottom-4 right-4 flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-950/90 backdrop-blur-md border border-emerald-500/40 shadow-xl text-xs font-bold text-emerald-300">
                 <BarChart2 className="w-3.5 h-3.5 text-emerald-400" />
