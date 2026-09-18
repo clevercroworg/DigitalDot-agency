@@ -53,4 +53,132 @@
     border-color: rgba(0, 0, 0, 0.14);
     box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.07);
   }
+
+  /* Orbital radar & floating animations */
+  .animate-radar-wave-1 {
+    animation: radar-wave 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  }
+  .animate-radar-wave-2 {
+    animation: radar-wave 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite 1.33s;
+  }
+  .animate-radar-wave-3 {
+    animation: radar-wave 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite 2.66s;
+  }
+
+  .animate-orbit-slow {
+    animation: orbit-rotate 38s linear infinite;
+  }
+  .animate-orbit-reverse {
+    animation: orbit-reverse 45s linear infinite;
+  }
+
+  .animate-float-1 {
+    animation: float-card-1 5.2s ease-in-out infinite;
+  }
+  .animate-float-2 {
+    animation: float-card-2 4.8s ease-in-out infinite 0.6s;
+  }
+  .animate-float-3 {
+    animation: float-card-3 5.6s ease-in-out infinite 1.2s;
+  }
+  .animate-float-4 {
+    animation: float-card-4 4.5s ease-in-out infinite 1.8s;
+  }
+  .animate-float-5 {
+    animation: float-card-5 5.4s ease-in-out infinite 0.9s;
+  }
+  .animate-float-6 {
+    animation: float-card-6 5s ease-in-out infinite 1.5s;
+  }
+
+  .animate-pulse-hub {
+    animation: hub-pulse 3s ease-in-out infinite;
+  }
+  .animate-ping-slow {
+    animation: ping-custom 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+
+@keyframes radar-wave {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes orbit-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes float-card-1 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-8px) translateX(3px); }
+}
+
+@keyframes float-card-2 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-10px) translateX(-2px); }
+}
+
+@keyframes float-card-3 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-7px) translateX(3px); }
+}
+
+@keyframes float-card-4 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-9px) translateX(-3px); }
+}
+
+@keyframes float-card-5 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-6px) translateX(2px); }
+}
+
+@keyframes float-card-6 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-8px) translateX(-2px); }
+}
+
+@keyframes hub-pulse {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.35), inset 0 0 15px rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(168, 85, 247, 0.65), inset 0 0 25px rgba(168, 85, 247, 0.4);
+    border-color: rgba(192, 132, 252, 0.9);
+  }
+}
+
+@keyframes ping-custom {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
 }
