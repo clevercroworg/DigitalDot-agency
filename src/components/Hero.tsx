@@ -30,23 +30,23 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
   const active = AUDIENCE_MODES[currentMode];
 
   return (
-    <section className="relative bg-[#070B1E] text-white pt-7 sm:pt-9 pb-2 overflow-visible border-b border-white/10">
+    <section className="relative bg-[#070B1E] text-white pt-6 sm:pt-9 pb-2 overflow-visible border-b border-white/10">
       
       {/* 
         DIGITALDOT BRANDED ATMOSPHERIC BACKGROUND:
         - Deep space obsidian navy (#070B1E)
         - Electric royal blue & cyan ambient flares
         - Subtle coordinate grid
-        - Overflow hidden restricted to this background layer only
+        - Overflow hidden strictly contained to this background container
       */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Obsidian base */}
         <div className="absolute inset-0 bg-[#070B1E]" />
 
         {/* Ambient brand radial glows */}
-        <div className="absolute -top-24 -left-24 w-80 h-80 bg-blue-600/15 rounded-full blur-[110px]" />
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[130px]" />
-        <div className="absolute top-1/3 right-1/4 w-[350px] h-[350px] bg-cyan-500/15 rounded-full blur-[110px]" />
+        <div className="absolute -top-24 -left-24 w-72 sm:w-80 h-72 sm:h-80 bg-blue-600/15 rounded-full blur-[100px]" />
+        <div className="absolute top-1/4 right-0 w-80 sm:w-[500px] h-80 sm:h-[500px] bg-blue-600/20 rounded-full blur-[120px]" />
+        <div className="absolute top-1/3 right-1/4 w-60 sm:w-[350px] h-60 sm:h-[350px] bg-cyan-500/15 rounded-full blur-[100px]" />
 
         {/* Crisp grid lines */}
         <div 
@@ -56,12 +56,12 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
               linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
               linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px)
             `,
-            backgroundSize: '40px 40px'
+            backgroundSize: '36px 36px'
           }}
         />
 
         {/* Faint ambient radar arcs */}
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 translate-x-1/4 w-[700px] h-[700px] rounded-full border border-blue-500/[0.05] pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 translate-x-1/4 w-[650px] h-[650px] rounded-full border border-blue-500/[0.05] pointer-events-none" />
       </div>
 
       {/* COMPACT MAIN HERO ROW (Left Content + Right Orbital Radar) */}
@@ -69,16 +69,16 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
           
           {/* ================= LEFT COLUMN ================= */}
-          <div className="lg:col-span-7 space-y-3.5 sm:space-y-4 max-w-2xl mx-auto lg:max-w-none text-left">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4 max-w-2xl mx-auto lg:max-w-none text-left">
             
             {/* Eyebrow Pill with Electric Blue Glow */}
             <motion.div 
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: WP_EASE }}
               className="inline-flex items-center"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-500/35 text-[11px] font-semibold text-blue-300 tracking-wide shadow-[0_0_15px_rgba(37,99,235,0.2)] backdrop-blur-md">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-blue-950/70 border border-blue-500/35 text-[10px] sm:text-[11px] font-semibold text-blue-300 tracking-wide shadow-[0_0_15px_rgba(37,99,235,0.2)] backdrop-blur-md">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse shadow-[0_0_6px_rgba(59,130,246,0.9)]" />
                 <span className="tracking-wider uppercase font-mono font-bold">
                   {active.badge} &bull; Global Delivery
@@ -87,9 +87,9 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
             </motion.div>
 
             {/* Headline - Bold White + Electric Blue / Cyan Gradient Highlight */}
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               <motion.h1 
-                initial={{ opacity: 0, y: 26 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.65, delay: 0.06, ease: WP_EASE }}
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-bold text-white font-display tracking-tight leading-[1.12]"
@@ -102,7 +102,7 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
               </motion.h1>
 
               <motion.p 
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.12, ease: WP_EASE }}
                 className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl font-normal"
@@ -115,13 +115,13 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
 
             {/* Dual Audience Switcher (Preserves All Original Content) */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.18, ease: WP_EASE }}
-              className="space-y-3 pt-0.5"
+              className="space-y-2.5 sm:space-y-3 pt-0.5"
             >
               {/* Compact Segment Toggle Buttons */}
-              <div className="p-1 bg-white/[0.05] backdrop-blur-md rounded-xl inline-flex flex-col sm:flex-row gap-1 border border-white/10 shadow-inner">
+              <div className="p-1 bg-white/[0.05] backdrop-blur-md rounded-xl inline-flex flex-col sm:flex-row gap-1 border border-white/10 shadow-inner w-full sm:w-auto">
                 <button
                   onClick={() => setMode('agency')}
                   className={`py-1.5 px-3 rounded-lg text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 ${
@@ -155,12 +155,12 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.18 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-xl"
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2 max-w-xl"
                 >
                   {active.message.map((msg, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-slate-300">
-                      <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
-                        <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    <div key={idx} className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-300">
+                      <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                        <Check className="w-2 sm:w-2.5 h-2 sm:h-2.5 stroke-[3]" />
                       </div>
                       <span className="leading-tight font-medium">{msg}</span>
                     </div>
@@ -168,8 +168,8 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
                 </motion.div>
               </AnimatePresence>
 
-              {/* Action Buttons - Electric Blue + Sleek Glass Outline */}
-              <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+              {/* Action Buttons */}
+              <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5">
                 <a
                   href={active.primaryCta.href}
                   className="inline-flex items-center justify-center gap-2 px-5 h-10 sm:h-11 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
@@ -201,124 +201,124 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
 
           </div>
 
-          {/* ================= RIGHT COLUMN (Compact Orbital Radar Constellation) ================= */}
-          <div className="lg:col-span-5 relative flex items-center justify-center py-2 lg:py-0">
+          {/* ================= RIGHT COLUMN (Compact Mobile-Optimized Orbital Radar Constellation) ================= */}
+          <div className="lg:col-span-5 relative flex items-center justify-center py-2 sm:py-4 lg:py-0">
             <motion.div 
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.75, delay: 0.12, ease: WP_EASE }}
-              className="relative w-full max-w-[420px] sm:max-w-[440px] h-[360px] sm:h-[390px] flex items-center justify-center"
+              className="relative w-full max-w-[340px] sm:max-w-[420px] h-[300px] sm:h-[370px] flex items-center justify-center mx-auto"
             >
               
               {/* Radial Blue/Indigo Glow */}
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/25 via-indigo-900/20 to-cyan-900/10 rounded-full blur-2xl pointer-events-none" />
 
               {/* Concentric Radar Pulse Waves */}
-              <div className="absolute w-[150px] h-[150px] rounded-full border border-blue-500/40 animate-radar-wave-1 pointer-events-none" />
-              <div className="absolute w-[220px] h-[220px] rounded-full border border-cyan-400/30 animate-radar-wave-2 pointer-events-none" />
-              <div className="absolute w-[300px] h-[300px] rounded-full border border-indigo-400/20 animate-radar-wave-3 pointer-events-none" />
+              <div className="absolute w-[130px] sm:w-[150px] h-[130px] sm:h-[150px] rounded-full border border-blue-500/40 animate-radar-wave-1 pointer-events-none" />
+              <div className="absolute w-[190px] sm:w-[220px] h-[190px] sm:h-[220px] rounded-full border border-cyan-400/30 animate-radar-wave-2 pointer-events-none" />
+              <div className="absolute w-[260px] sm:w-[300px] h-[260px] sm:h-[300px] rounded-full border border-indigo-400/20 animate-radar-wave-3 pointer-events-none" />
 
               {/* Static Orbit Ring 1 */}
-              <div className="absolute w-[190px] sm:w-[210px] h-[190px] sm:h-[210px] rounded-full border border-blue-500/25 pointer-events-none" />
+              <div className="absolute w-[160px] sm:w-[200px] h-[160px] sm:h-[200px] rounded-full border border-blue-500/25 pointer-events-none" />
 
               {/* Rotating Orbit Ring 2 with Cyan Satellite */}
-              <div className="absolute w-[280px] sm:w-[310px] h-[280px] sm:h-[310px] rounded-full border border-dashed border-cyan-400/25 pointer-events-none">
+              <div className="absolute w-[230px] sm:w-[290px] h-[230px] sm:h-[290px] rounded-full border border-dashed border-cyan-400/25 pointer-events-none">
                 <div className="w-full h-full animate-orbit-slow relative">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.9)]" />
                 </div>
               </div>
 
               {/* Reverse Rotating Orbit Ring 3 with Blue Satellite */}
-              <div className="absolute w-[360px] sm:w-[390px] h-[360px] sm:h-[390px] rounded-full border border-white/[0.08] pointer-events-none">
+              <div className="absolute w-[300px] sm:w-[370px] h-[300px] sm:h-[370px] rounded-full border border-white/[0.08] pointer-events-none">
                 <div className="w-full h-full animate-orbit-reverse relative">
                   <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.9)]" />
                 </div>
               </div>
 
-              {/* CENTER HUB: Rocket Core Node (DigitalDot Theme) */}
-              <div className="relative z-20 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-b from-[#0F1738] to-[#070B1F] border-2 border-blue-500/70 shadow-[0_0_35px_rgba(37,99,235,0.45)] flex flex-col items-center justify-center p-2 animate-pulse-hub group cursor-pointer hover:scale-105 transition-transform duration-300">
-                <div className="w-9 h-9 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.4)] group-hover:rotate-12 transition-transform">
-                  <Rocket className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
+              {/* CENTER HUB: Rocket Core Node */}
+              <div className="relative z-20 w-20 h-20 sm:w-26 sm:h-26 rounded-full bg-gradient-to-b from-[#0F1738] to-[#070B1F] border-2 border-blue-500/70 shadow-[0_0_35px_rgba(37,99,235,0.45)] flex flex-col items-center justify-center p-1.5 sm:p-2 animate-pulse-hub group cursor-pointer hover:scale-105 transition-transform duration-300">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.4)] group-hover:rotate-12 transition-transform">
+                  <Rocket className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2]" />
                 </div>
-                <span className="text-[8px] sm:text-[9px] font-mono font-bold tracking-widest text-blue-200 mt-1 uppercase text-center leading-tight">
+                <span className="text-[7px] sm:text-[8px] font-mono font-bold tracking-widest text-blue-200 mt-1 uppercase text-center leading-tight">
                   DIGITALDOT<br />CORE
                 </span>
               </div>
 
-              {/* ================= 6 SATELLITE CARDS ================= */}
+              {/* ================= 6 SATELLITE CARDS (MOBILE TUNED NO-COLLISION POSITIONS) ================= */}
 
               {/* 1. TOP-CENTER: 120+ Campaigns */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/4 z-30 animate-float-1">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-emerald-500/50 hover:bg-[#0E1538] transition-all duration-200">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 animate-float-1">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-emerald-500/50 transition-all">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
                   <div>
-                    <div className="text-xs font-bold text-white leading-none">120+ Campaigns</div>
-                    <div className="text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">ACROSS ALL CHANNELS</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-white leading-none">120+ Campaigns</div>
+                    <div className="text-[7px] sm:text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">ACROSS CHANNELS</div>
                   </div>
                 </div>
               </div>
 
               {/* 2. TOP-LEFT: 6 Core Services */}
-              <div className="absolute top-12 -left-3 sm:-left-1 z-30 animate-float-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-blue-500/50 hover:bg-[#0E1538] transition-all duration-200">
-                  <div className="w-5 h-5 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shrink-0">
-                    <Layers className="w-3 h-3" />
+              <div className="absolute top-10 -left-1 sm:left-0 z-30 animate-float-2">
+                <div className="flex items-center gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-blue-500/50 transition-all">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shrink-0">
+                    <Layers className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-white leading-none">6 Core Services</div>
-                    <div className="text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">FULL-FUNNEL ENGINE</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-white leading-none">6 Services</div>
+                    <div className="text-[7px] sm:text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">FULL-FUNNEL</div>
                   </div>
                 </div>
               </div>
 
               {/* 3. TOP-RIGHT: Revenue */}
-              <div className="absolute top-16 -right-3 sm:-right-1 z-30 animate-float-3">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-cyan-500/50 hover:bg-[#0E1538] transition-all duration-200">
-                  <div className="w-5 h-5 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30 shrink-0">
-                    <TrendingUp className="w-3 h-3" />
+              <div className="absolute top-10 -right-1 sm:right-0 z-30 animate-float-3">
+                <div className="flex items-center gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-cyan-500/50 transition-all">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30 shrink-0">
+                    <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-white leading-none">{active.highlightMetric.value} Lift</div>
-                    <div className="text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">DOCUMENTED ROI</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-white leading-none">{active.highlightMetric.value} Lift</div>
+                    <div className="text-[7px] sm:text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">DOCUMENTED ROI</div>
                   </div>
                 </div>
               </div>
 
               {/* 4. BOTTOM-LEFT: White-Label / NDA */}
-              <div className="absolute bottom-14 -left-3 sm:-left-1 z-30 animate-float-4">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-indigo-500/50 hover:bg-[#0E1538] transition-all duration-200">
-                  <div className="w-5 h-5 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30 shrink-0">
-                    <Star className="w-3 h-3 fill-indigo-400/40" />
+              <div className="absolute bottom-9 -left-1 sm:left-0 z-30 animate-float-4">
+                <div className="flex items-center gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-indigo-500/50 transition-all">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30 shrink-0">
+                    <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-indigo-400/40" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-white leading-none">100% White-Label</div>
-                    <div className="text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">STRICT NDA GUARANTEE</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-white leading-none">100% White-Label</div>
+                    <div className="text-[7px] sm:text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">STRICT NDA</div>
                   </div>
                 </div>
               </div>
 
               {/* 5. BOTTOM-RIGHT: Avg ROI */}
-              <div className="absolute bottom-12 -right-3 sm:-right-1 z-30 animate-float-5">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-cyan-500/50 hover:bg-[#0E1538] transition-all duration-200">
-                  <div className="w-5 h-5 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30 shrink-0">
-                    <Clock className="w-3 h-3" />
+              <div className="absolute bottom-9 -right-1 sm:right-0 z-30 animate-float-5">
+                <div className="flex items-center gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-cyan-500/50 transition-all">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30 shrink-0">
+                    <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-white leading-none">3x-5x Avg ROI</div>
-                    <div className="text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">ACROSS ALL SERVICES</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-white leading-none">3x-5x Avg ROI</div>
+                    <div className="text-[7px] sm:text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">ALL CHANNELS</div>
                   </div>
                 </div>
               </div>
 
               {/* 6. BOTTOM-CENTER: Trusted by 100+ Clients */}
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/3 z-30 animate-float-6">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-emerald-500/50 hover:bg-[#0E1538] transition-all duration-200">
-                  <div className="w-5 h-5 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shrink-0">
-                    <ShieldCheck className="w-3 h-3" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-30 animate-float-6">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#090D24]/95 backdrop-blur-xl border border-white/15 shadow-xl hover:border-emerald-500/50 transition-all">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shrink-0">
+                    <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-white leading-none">Trusted by 100+ Clients</div>
-                    <div className="text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">ACROSS MULTIPLE INDUSTRIES</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-white leading-none">Trusted by 100+</div>
+                    <div className="text-[7px] sm:text-[8px] font-medium text-slate-400 tracking-wider uppercase mt-0.5">ALL INDUSTRIES</div>
                   </div>
                 </div>
               </div>
@@ -329,72 +329,77 @@ export const Hero: React.FC<HeroProps> = ({ currentMode, setMode, onOpenDeckModa
         </div>
       </div>
 
-      {/* ================= FLOATING BRIDGE DOCK (IN BETWEEN HERO AND NEXT SECTION) ================= */}
-      <div className="relative z-30 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full -mb-10 sm:-mb-12 lg:-mb-14 mt-6 sm:mt-8">
+      {/* ================= FLOATING BRIDGE DOCK (OVERLAPPING IN BETWEEN HERO AND NEXT SECTION) ================= */}
+      <div className="relative z-30 max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 w-full -mb-8 sm:-mb-11 lg:-mb-14 mt-5 sm:mt-8">
         <motion.div 
-          initial={{ opacity: 0, y: 22 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.28, ease: WP_EASE }}
-          className="rounded-[28px] sm:rounded-[40px] bg-[#2E374D]/95 backdrop-blur-2xl border border-white/25 px-4 py-3 sm:px-6 sm:py-3.5 shadow-[0_22px_50px_rgba(0,0,0,0.55)] flex flex-col md:flex-row items-center justify-between gap-4"
+          transition={{ duration: 0.6, delay: 0.24, ease: WP_EASE }}
+          className="rounded-2xl sm:rounded-[40px] bg-[#2E374D]/95 backdrop-blur-2xl border border-white/25 p-3 sm:px-6 sm:py-3.5 shadow-[0_18px_45px_rgba(0,0,0,0.55)]"
         >
           
-          {/* Item 1: Trusted By */}
-          <div className="flex flex-col text-center md:text-left shrink-0">
-            <span className="text-white/85 text-xs sm:text-sm font-semibold flex items-center justify-center md:justify-start gap-1.5">
-              Trusted By <span className="text-amber-400">✦</span> <span className="text-cyan-300">✱</span>
-            </span>
-            <span className="text-lg sm:text-xl font-black text-white tracking-tight mt-0.5">
-              100+ Business
-            </span>
-          </div>
-
-          {/* Item 2: Video Thumbnail Preview with Play Button */}
-          <div 
-            onClick={onOpenDeckModal}
-            className="relative w-36 sm:w-40 h-16 sm:h-18 rounded-xl sm:rounded-2xl overflow-hidden border border-white/25 shadow-md group cursor-pointer shrink-0"
-            title="Watch Agency Overview"
-          >
-            <img 
-              src="/images/agency-team-analysis.jpg" 
-              alt="Strategy Brainstorming and Analysis"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-            />
-            <div className="absolute inset-0 bg-slate-950/25 group-hover:bg-slate-950/10 transition-colors" />
+          {/* Responsive Layout: 2x2 Grid on Mobile, Sleek Horizontal Bar on Desktop */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-row items-center justify-between gap-3 sm:gap-4">
             
-            {/* Play Button */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative">
-                <div className="absolute -inset-1.5 rounded-full bg-white/40 animate-ping-slow pointer-events-none" />
-                <div className="w-8 h-8 rounded-full bg-white text-slate-950 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                  <Play className="w-3.5 h-3.5 fill-slate-950 ml-0.5" />
+            {/* Item 1: Trusted By */}
+            <div className="flex flex-col text-left">
+              <span className="text-white/85 text-[11px] sm:text-sm font-semibold flex items-center gap-1">
+                Trusted By <span className="text-amber-400">✦</span> <span className="text-cyan-300">✱</span>
+              </span>
+              <span className="text-sm sm:text-lg lg:text-xl font-black text-white tracking-tight mt-0.5">
+                100+ Business
+              </span>
+            </div>
+
+            {/* Item 2: Rating & Stars */}
+            <div className="flex flex-col text-right sm:text-left sm:order-3">
+              <div className="flex items-center justify-end sm:justify-start gap-0.5 sm:gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <p className="text-[10px] sm:text-xs font-medium text-white/90 mt-0.5 sm:mt-1 leading-tight">
+                Rated 4.9/5 Clients
+              </p>
+            </div>
+
+            {/* Item 3: Video Thumbnail Preview with Play Button */}
+            <div 
+              onClick={onOpenDeckModal}
+              className="relative w-full sm:w-36 md:w-40 h-14 sm:h-16 rounded-xl overflow-hidden border border-white/25 shadow-md group cursor-pointer sm:order-2 shrink-0"
+              title="Watch Agency Overview"
+            >
+              <img 
+                src="/images/agency-team-analysis.jpg" 
+                alt="Strategy Brainstorming and Analysis"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
+              <div className="absolute inset-0 bg-slate-950/25 group-hover:bg-slate-950/10 transition-colors" />
+              
+              {/* Play Button */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative">
+                  <div className="absolute -inset-1 rounded-full bg-white/40 animate-ping-slow pointer-events-none" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-slate-950 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-slate-950 ml-0.5" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Item 3: 5-Star Rating */}
-          <div className="flex flex-col text-center md:text-left shrink-0">
-            <div className="flex items-center justify-center md:justify-start gap-1 text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              ))}
+            {/* Item 4: Traffic / Metric Card (Clean White Box) */}
+            <div className="bg-white rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 shadow-md flex flex-col justify-center w-full sm:w-auto sm:min-w-[150px] sm:order-4">
+              <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                Monthly Traffic
+              </span>
+              <span className="text-sm sm:text-lg lg:text-xl font-black text-slate-950 tracking-tight leading-none mt-0.5">
+                23.4k
+              </span>
+              <div className="w-full h-1 sm:h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1 sm:mt-1.5">
+                <div className="h-full bg-blue-600 rounded-full w-3/4" />
+              </div>
             </div>
-            <p className="text-xs font-medium text-white/95 mt-1 leading-snug">
-              Rated 4.9/5 From Our Trusted Clients
-            </p>
-          </div>
 
-          {/* Item 4: Traffic / Metric Card (Clean White Box with Blue/Dark Accent) */}
-          <div className="bg-white rounded-xl sm:rounded-2xl px-4 py-2 sm:py-2.5 shadow-lg flex flex-col justify-center w-full md:w-auto min-w-[160px]">
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-              Monthly Traffic
-            </span>
-            <span className="text-lg sm:text-xl font-black text-slate-950 tracking-tight leading-none mt-1">
-              23.4k
-            </span>
-            <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1.5">
-              <div className="h-full bg-blue-600 rounded-full w-3/4" />
-            </div>
           </div>
 
         </motion.div>
