@@ -8,7 +8,7 @@ import { WP_EASE, titleReveal, defaultViewport } from '../lib/animations';
 
 export const SocialProof: React.FC = () => {
   return (
-    <section className="pt-14 sm:pt-20 lg:pt-28 pb-14 sm:pb-20 bg-white border-b border-slate-200/80 overflow-hidden">
+    <section className="pt-24 sm:pt-28 lg:pt-32 pb-16 sm:pb-20 bg-white border-b border-slate-200/80 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Sub-text from brief with WordPress-style title slide */}
