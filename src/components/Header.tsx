@@ -155,6 +155,15 @@ export const Header: React.FC<HeaderProps> = ({ onOpenDeckModal }) => {
               Framework
             </a>
             <a 
+              href="/tools" 
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/70 transition-colors whitespace-nowrap group"
+            >
+              <span>Tools</span>
+              <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-blue-600 text-white rounded-full group-hover:bg-blue-700 transition-colors">
+                FREE
+              </span>
+            </a>
+            <a 
               href="#faqs" 
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors whitespace-nowrap"
             >
@@ -320,6 +329,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenDeckModal }) => {
                   >
                     <span>Verified Case Studies</span>
                     <ChevronRight className="w-4 h-4 text-slate-400" />
+                  </a>
+
+                  <a
+                    href="/tools"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between px-3.5 py-3 rounded-xl text-base font-bold text-slate-900 hover:bg-blue-50/60 transition-colors group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="group-hover:text-blue-600 transition-colors">Free SEO &amp; Keyword Tools</span>
+                      <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-blue-600 text-white rounded-full">
+                        FREE
+                      </span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
                   </a>
 
                   <a

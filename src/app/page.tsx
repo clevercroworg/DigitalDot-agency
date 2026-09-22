@@ -10,6 +10,7 @@ import { CorePillars } from '../components/CorePillars';
 import { CaseStudies } from '../components/CaseStudies';
 import { MarginCalculator } from '../components/MarginCalculator';
 import { CapabilitiesGrid } from '../components/CapabilitiesGrid';
+import { FreeToolsShowcase } from '../components/FreeToolsShowcase';
 import { FAQSection } from '../components/FAQSection';
 import { LeadMagnetCTA } from '../components/LeadMagnetCTA';
 import { Footer } from '../components/Footer';
@@ -53,7 +54,10 @@ export default function HomePage() {
         {/* 8. Full Service Capabilities Grid */}
         <CapabilitiesGrid />
 
-        {/* 9. Strategic FAQ Accordion */}
+        {/* 9. Free Keyword & Google SERP Tools Showcase */}
+        <FreeToolsShowcase onOpenDeckModal={() => setDeckModalOpen(true)} />
+
+        {/* 10. Strategic FAQ Accordion */}
         <FAQSection />
 
         {/* 10. High-Converting Bottom CTA & Lead Magnet Form */}

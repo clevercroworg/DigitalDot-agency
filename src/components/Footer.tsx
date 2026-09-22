@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
           
           {/* Brand & Positioning (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
@@ -79,6 +79,38 @@ export const Footer: React.FC = () => {
                   </a>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Free SEO & Agency Tools */}
+          <div className="space-y-3">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-900 font-mono flex items-center gap-1.5">
+              <span>Free Tools</span>
+              <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-blue-100 text-blue-700 rounded-full">
+                NEW
+              </span>
+            </div>
+            <ul className="space-y-2">
+              <li>
+                <a href="/tools" className="hover:text-blue-600 transition-colors">
+                  Keyword Volume Tool
+                </a>
+              </li>
+              <li>
+                <a href="/tools" className="hover:text-blue-600 transition-colors">
+                  Google SERP Rank Checker
+                </a>
+              </li>
+              <li>
+                <a href="/tools" className="hover:text-blue-600 transition-colors">
+                  CPC Bid Estimator
+                </a>
+              </li>
+              <li>
+                <a href="/tools" className="hover:text-blue-600 transition-colors">
+                  Search Intent Classifier
+                </a>
+              </li>
             </ul>
           </div>
 
