@@ -192,59 +192,81 @@ async function fetchGoogleSuggestions(query: string, country: string): Promise<s
   return Array.from(suggestions);
 }
 
+async function handleKeywordProcessing(query: string, industry: string, country: string) {
+  const cleanTrimmedQuery = query.trim();
+  if (!cleanTrimmedQuery) {
+    return NextResponse.json({ error: 'Query keyword or URL is required' }, { status: 400 });
+  }
+
+  // Clean query if it's a domain/URL
+  let cleanQuery = cleanTrimmedQuery;
+  if (cleanQuery.startsWith('http://') || cleanQuery.startsWith('https://')) {
+    try {
+      const parsed = new URL(cleanQuery);
+      cleanQuery = parsed.hostname.replace('www.', '').split('.')[0];
+    } catch {
+      cleanQuery = cleanQuery.replace(/https?:\/\//, '').replace(/www\./, '');
+    }
+  }
+
+  // Fetch live Google suggestions
+  const rawKeywords = await fetchGoogleSuggestions(cleanQuery, country);
+
+  // Compute volumetric and commercial bidding metrics
+  const results: KeywordData[] = rawKeywords.map(kw => 
+    calculateMetrics(kw, cleanQuery, industry, country)
+  );
+
+  // Sort by search volume descending
+  results.sort((a, b) => b.searchVolume - a.searchVolume);
+
+  // Summary statistics
+  const totalVolume = results.reduce((acc, curr) => acc + curr.searchVolume, 0);
+  const avgCpc = results.length > 0 
+    ? Number((results.reduce((acc, curr) => acc + curr.cpcHigh, 0) / results.length).toFixed(2))
+    : 0;
+  const commercialCount = results.filter(r => r.intent === 'Commercial' || r.intent === 'Transactional').length;
+  const commercialRatio = results.length > 0 ? Math.round((commercialCount / results.length) * 100) : 0;
+
+  return NextResponse.json({
+    query: cleanQuery,
+    industry,
+    country,
+    totalKeywords: results.length,
+    totalSearchVolume: totalVolume,
+    avgHighCpc: avgCpc,
+    commercialIntentPercentage: commercialRatio,
+    keywords: results.slice(0, 50),
+  });
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const query = searchParams.get('query') || searchParams.get('q') || '';
+    const industry = searchParams.get('industry') || 'All Industries';
+    const country = searchParams.get('country') || 'US';
+
+    return await handleKeywordProcessing(query, industry, country);
+  } catch (error: any) {
+    console.error('Keyword GET API error:', error);
+    return NextResponse.json(
+      { error: 'Failed to retrieve keyword metrics', details: error?.message },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const query = (body.query || '').trim();
+    const query = (body.query || body.q || '').trim();
     const industry = body.industry || 'All Industries';
     const country = body.country || 'US';
 
-    if (!query) {
-      return NextResponse.json({ error: 'Query keyword or URL is required' }, { status: 400 });
-    }
-
-    // Clean query if it's a domain/URL
-    let cleanQuery = query;
-    if (cleanQuery.startsWith('http://') || cleanQuery.startsWith('https://')) {
-      try {
-        const parsed = new URL(cleanQuery);
-        cleanQuery = parsed.hostname.replace('www.', '').split('.')[0];
-      } catch {
-        cleanQuery = cleanQuery.replace(/https?:\/\//, '').replace(/www\./, '');
-      }
-    }
-
-    // Fetch live Google suggestions
-    const rawKeywords = await fetchGoogleSuggestions(cleanQuery, country);
-
-    // Compute volumetric and commercial bidding metrics
-    const results: KeywordData[] = rawKeywords.map(kw => 
-      calculateMetrics(kw, cleanQuery, industry, country)
-    );
-
-    // Sort by search volume descending
-    results.sort((a, b) => b.searchVolume - a.searchVolume);
-
-    // Summary statistics
-    const totalVolume = results.reduce((acc, curr) => acc + curr.searchVolume, 0);
-    const avgCpc = results.length > 0 
-      ? Number((results.reduce((acc, curr) => acc + curr.cpcHigh, 0) / results.length).toFixed(2))
-      : 0;
-    const commercialCount = results.filter(r => r.intent === 'Commercial' || r.intent === 'Transactional').length;
-    const commercialRatio = results.length > 0 ? Math.round((commercialCount / results.length) * 100) : 0;
-
-    return NextResponse.json({
-      query: cleanQuery,
-      industry,
-      country,
-      totalKeywords: results.length,
-      totalSearchVolume: totalVolume,
-      avgHighCpc: avgCpc,
-      commercialIntentPercentage: commercialRatio,
-      keywords: results.slice(0, 50),
-    });
+    return await handleKeywordProcessing(query, industry, country);
   } catch (error: any) {
-    console.error('Keyword API error:', error);
+    console.error('Keyword POST API error:', error);
     return NextResponse.json(
       { error: 'Failed to retrieve keyword metrics', details: error?.message },
       { status: 500 }

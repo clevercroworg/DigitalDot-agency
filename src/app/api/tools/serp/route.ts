@@ -113,129 +113,153 @@ function getTopCompetitors(keyword: string, targetDomain: string, targetRank: nu
   return results;
 }
 
+async function handleSerpProcessing(domainInput: string, keywordInput: string, countryInput: string, deviceInput: string) {
+  if (!domainInput || !keywordInput) {
+    return NextResponse.json(
+      { error: 'Both website domain/URL and target keyword are required' },
+      { status: 400 }
+    );
+  }
+
+  const domain = cleanDomain(domainInput);
+  const keyword = keywordInput;
+  const country = countryInput || 'US';
+  const device = deviceInput || 'desktop';
+
+  // Deterministic ranking algorithm for continuous, realistic check
+  const seed = hashString(`${domain}_${keyword}_${country}`);
+  
+  // Check if domain is likely to rank for this keyword
+  const matchScore = (seed % 100);
+  let rankPosition: number | null = null;
+  let pageNumber: number | null = null;
+
+  // If query matches domain name or industry directly, boost ranking
+  if (domain.includes('digitaldot') && (keyword.includes('white label') || keyword.includes('digital marketing') || keyword.includes('agency'))) {
+    rankPosition = (seed % 3) + 1; // Rank 1, 2, or 3
+    pageNumber = 1;
+  } else if (matchScore < 25) {
+    // Top 3
+    rankPosition = (seed % 3) + 1;
+    pageNumber = 1;
+  } else if (matchScore < 55) {
+    // First page (Rank 4 - 10)
+    rankPosition = 4 + (seed % 7);
+    pageNumber = 1;
+  } else if (matchScore < 80) {
+    // Second/Third page (Rank 11 - 30)
+    rankPosition = 11 + (seed % 20);
+    pageNumber = Math.ceil(rankPosition / 10);
+  } else {
+    // Beyond page 3 or unranked
+    const inTop100 = (seed % 2) === 0;
+    if (inTop100) {
+      rankPosition = 31 + (seed % 65);
+      pageNumber = Math.ceil(rankPosition / 10);
+    } else {
+      rankPosition = null;
+      pageNumber = null;
+    }
+  }
+
+  // Detected SERP Features on Google
+  const serpFeaturesDetected: string[] = ['Organic Web Results'];
+  if (keyword.toLowerCase().includes('how') || keyword.toLowerCase().includes('what') || keyword.toLowerCase().includes('best')) {
+    serpFeaturesDetected.push('AI Overview (SGE)');
+    serpFeaturesDetected.push('Featured Snippet');
+  }
+  if (keyword.toLowerCase().includes('near me') || keyword.toLowerCase().includes('agency') || keyword.toLowerCase().includes('services')) {
+    serpFeaturesDetected.push('Local 3-Pack Map');
+  }
+  serpFeaturesDetected.push('People Also Ask');
+  serpFeaturesDetected.push('Related Searches');
+
+  // Build competitor leaderboard
+  const competitors = getTopCompetitors(keyword, domain, rankPosition);
+
+  // Find target result item
+  const targetResult = rankPosition
+    ? {
+        position: rankPosition,
+        domain: domain,
+        url: `https://${domain}/services/${encodeURIComponent(keyword.toLowerCase().replace(/\s+/g, '-'))}`,
+        title: `${domain.charAt(0).toUpperCase() + domain.slice(1)} | High-Performance ${keyword}`,
+        snippet: `Discover top-tier solutions and case studies for ${keyword}. Scalable ROAS, certified specialists, and verified client outcomes on ${domain}.`,
+        isTarget: true,
+        features: rankPosition <= 3 ? ['Featured Sitelinks', 'FAQ Schema'] : [],
+      }
+    : null;
+
+  // Generate actionable SEO recommendations
+  const seoRecommendations: string[] = [];
+  if (!rankPosition) {
+    seoRecommendations.push(`Target page for "${keyword}" is not yet indexed in Google's Top 100. Submit a sitemap update via Google Search Console.`);
+    seoRecommendations.push(`Create dedicated pillar content targeting "${keyword}" with exact semantic headers (H1, H2) and entity relationships.`);
+    seoRecommendations.push(`Build high-authority contextual backlinks from industry-relevant publications.`);
+  } else if (rankPosition > 10) {
+    seoRecommendations.push(`Currently ranking on Page ${pageNumber} (Position #${rankPosition}). Boost internal linking from your highest PageRank URLs.`);
+    seoRecommendations.push(`Enhance on-page depth: expand content word count with FAQ Schema and answers to "People Also Ask" questions.`);
+    seoRecommendations.push(`Optimize Core Web Vitals (LCP < 2.0s and zero Layout Shifts) to climb from page 2 to page 1.`);
+  } else if (rankPosition > 3) {
+    seoRecommendations.push(`Great Page 1 ranking (#${rankPosition})! To breach the Top 3, optimize your title tag with high-CTR commercial modifiers.`);
+    seoRecommendations.push(`Inject Schema.org JSON-LD (Product, Service, or Article) to win Rich Snippet enhancements.`);
+    seoRecommendations.push(`Optimize for Google's AI Overview: format summary answers directly beneath your H2 headers.`);
+  } else {
+    seoRecommendations.push(`Elite Top 3 ranking (#${rankPosition})! Protect your position with continuous entity citation monitoring.`);
+    seoRecommendations.push(`Monitor competitor bid changes on Google Ads for "${keyword}" to protect organic traffic erosion.`);
+    seoRecommendations.push(`Audit mobile UX and answer-engine citations (Perplexity & ChatGPT) to dominate cross-platform AI search.`);
+  }
+
+  const tld = country === 'UK' ? 'co.uk' : country === 'IN' ? 'co.in' : country === 'CA' ? 'ca' : country === 'AU' ? 'com.au' : 'com';
+  const searchUrl = `https://www.google.${tld}/search?q=${encodeURIComponent(keyword)}`;
+
+  const response: SerpCheckResponse = {
+    keyword,
+    domain,
+    country,
+    device,
+    isRanked: rankPosition !== null,
+    rankPosition,
+    pageNumber,
+    targetResult,
+    serpFeaturesDetected,
+    competitors,
+    seoRecommendations,
+    searchUrl,
+  };
+
+  return NextResponse.json(response);
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const domain = (searchParams.get('domain') || '').trim();
+    const keyword = (searchParams.get('keyword') || searchParams.get('q') || '').trim();
+    const country = searchParams.get('country') || 'US';
+    const device = searchParams.get('device') || 'desktop';
+
+    return await handleSerpProcessing(domain, keyword, country, device);
+  } catch (error: any) {
+    console.error('SERP GET API error:', error);
+    return NextResponse.json(
+      { error: 'Failed to check Google SERP position', details: error?.message },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const domainInput = (body.domain || '').trim();
-    const keywordInput = (body.keyword || '').trim();
+    const keywordInput = (body.keyword || body.q || '').trim();
     const country = body.country || 'US';
     const device = body.device || 'desktop';
 
-    if (!domainInput || !keywordInput) {
-      return NextResponse.json(
-        { error: 'Both website domain/URL and target keyword are required' },
-        { status: 400 }
-      );
-    }
-
-    const domain = cleanDomain(domainInput);
-    const keyword = keywordInput;
-
-    // Deterministic ranking algorithm for continuous, realistic check
-    const seed = hashString(`${domain}_${keyword}_${country}`);
-    
-    // Check if domain is likely to rank for this keyword
-    const matchScore = (seed % 100);
-    let rankPosition: number | null = null;
-    let pageNumber: number | null = null;
-
-    // If query matches domain name or industry directly, boost ranking
-    if (domain.includes('digitaldot') && (keyword.includes('white label') || keyword.includes('digital marketing') || keyword.includes('agency'))) {
-      rankPosition = (seed % 3) + 1; // Rank 1, 2, or 3
-      pageNumber = 1;
-    } else if (matchScore < 25) {
-      // Top 3
-      rankPosition = (seed % 3) + 1;
-      pageNumber = 1;
-    } else if (matchScore < 55) {
-      // First page (Rank 4 - 10)
-      rankPosition = 4 + (seed % 7);
-      pageNumber = 1;
-    } else if (matchScore < 80) {
-      // Second/Third page (Rank 11 - 30)
-      rankPosition = 11 + (seed % 20);
-      pageNumber = Math.ceil(rankPosition / 10);
-    } else {
-      // Beyond page 3 or unranked
-      const inTop100 = (seed % 2) === 0;
-      if (inTop100) {
-        rankPosition = 31 + (seed % 65);
-        pageNumber = Math.ceil(rankPosition / 10);
-      } else {
-        rankPosition = null;
-        pageNumber = null;
-      }
-    }
-
-    // Detected SERP Features on Google
-    const serpFeaturesDetected: string[] = ['Organic Web Results'];
-    if (keyword.toLowerCase().includes('how') || keyword.toLowerCase().includes('what') || keyword.toLowerCase().includes('best')) {
-      serpFeaturesDetected.push('AI Overview (SGE)');
-      serpFeaturesDetected.push('Featured Snippet');
-    }
-    if (keyword.toLowerCase().includes('near me') || keyword.toLowerCase().includes('agency') || keyword.toLowerCase().includes('services')) {
-      serpFeaturesDetected.push('Local 3-Pack Map');
-    }
-    serpFeaturesDetected.push('People Also Ask');
-    serpFeaturesDetected.push('Related Searches');
-
-    // Build competitor leaderboard
-    const competitors = getTopCompetitors(keyword, domain, rankPosition);
-
-    // Find target result item
-    const targetResult = rankPosition
-      ? {
-          position: rankPosition,
-          domain: domain,
-          url: `https://${domain}/services/${encodeURIComponent(keyword.toLowerCase().replace(/\s+/g, '-'))}`,
-          title: `${domain.charAt(0).toUpperCase() + domain.slice(1)} | High-Performance ${keyword}`,
-          snippet: `Discover top-tier solutions and case studies for ${keyword}. Scalable ROAS, certified specialists, and verified client outcomes on ${domain}.`,
-          isTarget: true,
-          features: rankPosition <= 3 ? ['Featured Sitelinks', 'FAQ Schema'] : [],
-        }
-      : null;
-
-    // Generate actionable SEO recommendations
-    const seoRecommendations: string[] = [];
-    if (!rankPosition) {
-      seoRecommendations.push(`Target page for "${keyword}" is not yet indexed in Google's Top 100. Submit a sitemap update via Google Search Console.`);
-      seoRecommendations.push(`Create dedicated pillar content targeting "${keyword}" with exact semantic headers (H1, H2) and entity relationships.`);
-      seoRecommendations.push(`Build high-authority contextual backlinks from industry-relevant publications.`);
-    } else if (rankPosition > 10) {
-      seoRecommendations.push(`Currently ranking on Page ${pageNumber} (Position #${rankPosition}). Boost internal linking from your highest PageRank URLs.`);
-      seoRecommendations.push(`Enhance on-page depth: expand content word count with FAQ Schema and answers to "People Also Ask" questions.`);
-      seoRecommendations.push(`Optimize Core Web Vitals (LCP < 2.0s and zero Layout Shifts) to climb from page 2 to page 1.`);
-    } else if (rankPosition > 3) {
-      seoRecommendations.push(`Great Page 1 ranking (#${rankPosition})! To breach the Top 3, optimize your title tag with high-CTR commercial modifiers.`);
-      seoRecommendations.push(`Inject Schema.org JSON-LD (Product, Service, or Article) to win Rich Snippet enhancements.`);
-      seoRecommendations.push(`Optimize for Google's AI Overview: format summary answers directly beneath your H2 headers.`);
-    } else {
-      seoRecommendations.push(`Elite Top 3 ranking (#${rankPosition})! Protect your position with continuous entity citation monitoring.`);
-      seoRecommendations.push(`Monitor competitor bid changes on Google Ads for "${keyword}" to protect organic traffic erosion.`);
-      seoRecommendations.push(`Audit mobile UX and answer-engine citations (Perplexity & ChatGPT) to dominate cross-platform AI search.`);
-    }
-
-    const tld = country === 'UK' ? 'co.uk' : country === 'IN' ? 'co.in' : country === 'CA' ? 'ca' : country === 'AU' ? 'com.au' : 'com';
-    const searchUrl = `https://www.google.${tld}/search?q=${encodeURIComponent(keyword)}`;
-
-    const response: SerpCheckResponse = {
-      keyword,
-      domain,
-      country,
-      device,
-      isRanked: rankPosition !== null,
-      rankPosition,
-      pageNumber,
-      targetResult,
-      serpFeaturesDetected,
-      competitors,
-      seoRecommendations,
-      searchUrl,
-    };
-
-    return NextResponse.json(response);
+    return await handleSerpProcessing(domainInput, keywordInput, country, device);
   } catch (error: any) {
-    console.error('SERP API error:', error);
+    console.error('SERP POST API error:', error);
     return NextResponse.json(
       { error: 'Failed to check Google SERP position', details: error?.message },
       { status: 500 }
