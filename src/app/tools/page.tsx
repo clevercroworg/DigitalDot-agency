@@ -334,13 +334,13 @@ export default function ToolsPage() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.22, ease: WP_EASE }}
-              className="pt-3 flex justify-center"
+              className="pt-2 flex justify-center w-full"
             >
-              <div className="p-1.5 bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-white/15 inline-flex gap-1.5 shadow-2xl">
+              <div className="p-1.5 bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-white/15 flex flex-col sm:flex-row gap-1.5 shadow-2xl w-full max-w-lg sm:w-auto">
                 
                 <button
                   onClick={() => setActiveTab('keywords')}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                     activeTab === 'keywords'
                       ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                       : 'text-slate-300 hover:text-white hover:bg-white/5'
@@ -357,7 +357,7 @@ export default function ToolsPage() {
                       handleSerpCheck();
                     }
                   }}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                     activeTab === 'serp'
                       ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                       : 'text-slate-300 hover:text-white hover:bg-white/5'
@@ -374,39 +374,39 @@ export default function ToolsPage() {
         </section>
 
         {/* ================= TOOLS INTERFACE SECTION ================= */}
-        <section className="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-6 sm:py-10 lg:py-14 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
           
           {/* ================= TAB 1: KEYWORD SEARCH & DISCOVERY TOOL ================= */}
           {activeTab === 'keywords' && (
-            <div className="space-y-8 animate-in fade-in duration-200">
+            <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-200">
               
               {/* Tool Search Card (WordStream Elevated Style) */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-900/5 space-y-6">
+              <div className="p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-900/5 space-y-5 sm:space-y-6">
                 
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-5 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 sm:gap-3 pb-4 sm:pb-5 border-b border-slate-100">
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
+                    <h2 className="text-lg sm:text-2xl font-bold text-slate-900 font-display">
                       Keyword Discovery &amp; Volume Estimator
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                       Query Google's real-time suggest network to extract monthly volume, low/high range bids, and competitive indexes.
                     </p>
                   </div>
 
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold font-mono">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold font-mono shrink-0">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     LIVE ENGINE
                   </span>
                 </div>
 
-                {/* Form Controls */}
+                {/* Form Controls - Responsive 12-column grid with dedicated button space */}
                 <form 
                   onSubmit={(e) => { e.preventDefault(); handleKeywordSearch(); }}
-                  className="grid grid-cols-1 md:grid-cols-12 gap-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 sm:gap-4 items-end"
                 >
                   
                   {/* Keyword / URL Input */}
-                  <div className="md:col-span-6 space-y-1.5">
+                  <div className="sm:col-span-2 lg:col-span-4 xl:col-span-4 space-y-1.5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                       * Keyword or Website URL
                     </label>
@@ -424,36 +424,39 @@ export default function ToolsPage() {
                   </div>
 
                   {/* Industry Select */}
-                  <div className="md:col-span-3 space-y-1.5">
+                  <div className="sm:col-span-1 lg:col-span-3 xl:col-span-3 space-y-1.5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                       Industry Vertical
                     </label>
-                    <select
-                      value={kwIndustry}
-                      onChange={(e) => {
-                        const newInd = e.target.value;
-                        setKwIndustry(newInd);
-                        handleKeywordSearch(kwQuery, newInd, kwCountry);
-                      }}
-                      className="w-full px-3.5 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer"
-                    >
-                      <option value="All Industries">All Industries</option>
-                      <option value="Digital Marketing & Agency">Digital Marketing &amp; Agency</option>
-                      <option value="B2B SaaS & Tech">B2B SaaS &amp; Tech</option>
-                      <option value="Healthcare & Medical">Healthcare &amp; Medical</option>
-                      <option value="E-commerce & Retail">E-commerce &amp; Retail</option>
-                      <option value="Legal & Law">Legal &amp; Law Firms</option>
-                      <option value="Finance & Crypto">Finance &amp; Crypto</option>
-                      <option value="Real Estate">Real Estate &amp; Construction</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={kwIndustry}
+                        onChange={(e) => {
+                          const newInd = e.target.value;
+                          setKwIndustry(newInd);
+                          handleKeywordSearch(kwQuery, newInd, kwCountry);
+                        }}
+                        className="w-full pl-3.5 pr-9 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer appearance-none"
+                      >
+                        <option value="All Industries">All Industries</option>
+                        <option value="Digital Marketing & Agency">Digital Marketing &amp; Agency</option>
+                        <option value="B2B SaaS & Tech">B2B SaaS &amp; Tech</option>
+                        <option value="Healthcare & Medical">Healthcare &amp; Medical</option>
+                        <option value="E-commerce & Retail">E-commerce &amp; Retail</option>
+                        <option value="Legal & Law">Legal &amp; Law Firms</option>
+                        <option value="Finance & Crypto">Finance &amp; Crypto</option>
+                        <option value="Real Estate">Real Estate &amp; Construction</option>
+                      </select>
+                      <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
                   </div>
 
                   {/* Country Select */}
-                  <div className="md:col-span-3 space-y-1.5">
+                  <div className="sm:col-span-1 lg:col-span-3 xl:col-span-3 space-y-1.5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                       Target Country
                     </label>
-                    <div className="flex gap-2">
+                    <div className="relative">
                       <select
                         value={kwCountry}
                         onChange={(e) => {
@@ -461,7 +464,7 @@ export default function ToolsPage() {
                           setKwCountry(newCtry);
                           handleKeywordSearch(kwQuery, kwIndustry, newCtry);
                         }}
-                        className="flex-1 px-3.5 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer"
+                        className="w-full pl-3.5 pr-9 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer appearance-none"
                       >
                         <option value="US">United States (US)</option>
                         <option value="UK">United Kingdom (UK)</option>
@@ -470,26 +473,33 @@ export default function ToolsPage() {
                         <option value="IN">India (IN)</option>
                         <option value="Global">Global Search</option>
                       </select>
-
-                      <button
-                        type="submit"
-                        disabled={kwLoading}
-                        className="px-6 h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg shadow-blue-600/25 flex items-center justify-center shrink-0 disabled:opacity-50"
-                      >
-                        {kwLoading ? (
-                          <RefreshCw className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <span>Search</span>
-                        )}
-                      </button>
+                      <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>
+                  </div>
+
+                  {/* Search Action Button */}
+                  <div className="sm:col-span-2 lg:col-span-2 xl:col-span-2 space-y-1.5">
+                    <button
+                      type="submit"
+                      disabled={kwLoading}
+                      className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 active:scale-[0.98]"
+                    >
+                      {kwLoading ? (
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Search className="w-4 h-4" />
+                          <span>Search</span>
+                        </>
+                      )}
+                    </button>
                   </div>
 
                 </form>
 
                 {/* Quick Suggestion Pills */}
-                <div className="flex flex-wrap items-center gap-2 pt-2 text-xs">
-                  <span className="text-slate-400 font-medium">Quick suggestions:</span>
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-1 text-xs">
+                  <span className="text-slate-400 font-medium mr-1 text-[11px] sm:text-xs">Quick suggestions:</span>
                   {SAMPLE_QUICK_KEYWORDS.map((sample, idx) => (
                     <button
                       key={idx}
@@ -497,7 +507,7 @@ export default function ToolsPage() {
                         setKwQuery(sample);
                         handleKeywordSearch(sample);
                       }}
-                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 border border-slate-200/60 transition-colors"
+                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-700 border border-slate-200/70 transition-all text-xs active:scale-95"
                     >
                       {sample}
                     </button>
@@ -507,59 +517,59 @@ export default function ToolsPage() {
               </div>
 
               {/* Keyword Metrics Overview Cards */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono line-clamp-1">
                     Total Keywords
                   </span>
                   <div className="flex items-baseline justify-between mt-2">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
                       {kwResults.length}
                     </span>
-                    <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
+                    <span className="text-[10px] sm:text-xs font-bold text-blue-600 bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded-md">
                       Discovered
                     </span>
                   </div>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-                    Total Monthly Searches
+                <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono line-clamp-1">
+                    Monthly Volume
                   </span>
                   <div className="flex items-baseline justify-between mt-2">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
                       {kwTotalVolume.toLocaleString()}
                     </span>
-                    <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                      Volume/mo
+                    <span className="text-[10px] sm:text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 sm:px-2 py-0.5 rounded-md">
+                      Vol/mo
                     </span>
                   </div>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-                    Avg High-Range CPC
+                <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono line-clamp-1">
+                    Avg High CPC
                   </span>
                   <div className="flex items-baseline justify-between mt-2">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
                       ${kwAvgCpc.toFixed(2)}
                     </span>
-                    <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
-                      Top of Page
+                    <span className="text-[10px] sm:text-xs font-bold text-indigo-600 bg-indigo-50 px-1.5 sm:px-2 py-0.5 rounded-md">
+                      Top Page
                     </span>
                   </div>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-                    Commercial Intent Rate
+                <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono line-clamp-1">
+                    Commercial Intent
                   </span>
                   <div className="flex items-baseline justify-between mt-2">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
                       {kwCommercialRatio}%
                     </span>
-                    <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md">
+                    <span className="text-[10px] sm:text-xs font-bold text-amber-600 bg-amber-50 px-1.5 sm:px-2 py-0.5 rounded-md">
                       High-Intent
                     </span>
                   </div>
@@ -568,10 +578,10 @@ export default function ToolsPage() {
               </div>
 
               {/* Keyword Data Table (Exact WordStream Format Elevated) */}
-              <div className="rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-900/5 overflow-hidden">
+              <div className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-900/5 overflow-hidden">
                 
                 {/* Table Header Bar */}
-                <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="p-4 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4">
                   <div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900">
                       Keyword results for &ldquo;{kwQuery}&rdquo;
@@ -581,23 +591,23 @@ export default function ToolsPage() {
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2.5">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
                     {/* Filter search input */}
-                    <div className="relative">
+                    <div className="relative w-full sm:w-48">
                       <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                       <input
                         type="text"
                         value={kwTableFilter}
                         onChange={(e) => setKwTableFilter(e.target.value)}
                         placeholder="Filter by keyword..."
-                        className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-900 w-44"
+                        className="w-full pl-8 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-900"
                       />
                     </div>
 
                     {/* CSV Download Button verbatim like Wordstream */}
                     <button
                       onClick={downloadCsv}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm hover:shadow"
+                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm hover:shadow active:scale-[0.98] shrink-0"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Download My Keywords (CSV)</span>
@@ -606,8 +616,8 @@ export default function ToolsPage() {
                 </div>
 
                 {/* Secondary Fast Filters: Competition, Intent & Reset */}
-                <div className="px-5 sm:px-6 py-2.5 bg-slate-50/80 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
-                  <div className="flex flex-wrap items-center gap-4">
+                <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-50/80 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 text-xs">
+                  <div className="flex flex-wrap items-center gap-2.5 sm:gap-4">
                     {/* Competition Filter */}
                     <div className="flex items-center gap-1.5">
                       <span className="font-semibold text-slate-500 font-mono uppercase text-[10px]">Competition:</span>
@@ -616,7 +626,7 @@ export default function ToolsPage() {
                           <button
                             key={lvl}
                             onClick={() => setKwCompetitionFilter(lvl)}
-                            className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all ${
+                            className={`px-2 sm:px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all ${
                               kwCompetitionFilter === lvl
                                 ? 'bg-white text-slate-900 shadow-sm'
                                 : 'text-slate-600 hover:text-slate-900'
@@ -636,7 +646,7 @@ export default function ToolsPage() {
                           <button
                             key={int}
                             onClick={() => setKwIntentFilter(int)}
-                            className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all ${
+                            className={`px-2 sm:px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all ${
                               kwIntentFilter === int
                                 ? 'bg-white text-slate-900 shadow-sm'
                                 : 'text-slate-600 hover:text-slate-900'
@@ -657,26 +667,32 @@ export default function ToolsPage() {
                         setKwCompetitionFilter('all');
                         setKwIntentFilter('all');
                       }}
-                      className="text-blue-600 hover:text-blue-700 font-semibold underline text-xs"
+                      className="text-blue-600 hover:text-blue-700 font-semibold underline text-xs text-left"
                     >
                       Clear all filters
                     </button>
                   )}
                 </div>
 
+                {/* Mobile horizontal swipe notice */}
+                <div className="md:hidden px-4 py-2 bg-blue-50/70 border-b border-blue-100/60 flex items-center justify-between text-[11px] text-blue-700 font-medium">
+                  <span>💡 Swipe table sideways to compare bids &amp; competition</span>
+                  <span className="font-bold">→</span>
+                </div>
+
                 {/* Data Table */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto overscroll-x-contain">
                   <table className="w-full text-left text-xs sm:text-sm">
                     <thead>
                       <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] uppercase font-bold text-slate-500 font-mono tracking-wider">
-                        <th className="py-3.5 px-4 sm:px-6">Keywords</th>
+                        <th className="py-3.5 px-4 sm:px-6 min-w-[200px] sm:min-w-[240px]">Keywords</th>
                         
                         <th 
                           onClick={() => {
                             if (kwSortBy === 'volume') setKwSortAsc(!kwSortAsc);
                             else { setKwSortBy('volume'); setKwSortAsc(false); }
                           }}
-                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
+                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap min-w-[125px]"
                         >
                           <div className="flex items-center gap-1.5">
                             <span className={kwSortBy === 'volume' ? 'text-blue-600 font-bold' : ''}>Search volume</span>
@@ -691,7 +707,7 @@ export default function ToolsPage() {
                             if (kwSortBy === 'cpcLow') setKwSortAsc(!kwSortAsc);
                             else { setKwSortBy('cpcLow'); setKwSortAsc(true); }
                           }}
-                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
+                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap min-w-[120px]"
                         >
                           <div className="flex items-center gap-1.5">
                             <span className={kwSortBy === 'cpcLow' ? 'text-blue-600 font-bold' : ''}>Top of page bid (low)</span>
@@ -706,7 +722,7 @@ export default function ToolsPage() {
                             if (kwSortBy === 'cpcHigh') setKwSortAsc(!kwSortAsc);
                             else { setKwSortBy('cpcHigh'); setKwSortAsc(false); }
                           }}
-                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
+                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap min-w-[120px]"
                         >
                           <div className="flex items-center gap-1.5">
                             <span className={kwSortBy === 'cpcHigh' ? 'text-blue-600 font-bold' : ''}>Top of page bid (high)</span>
@@ -721,7 +737,7 @@ export default function ToolsPage() {
                             if (kwSortBy === 'competition') setKwSortAsc(!kwSortAsc);
                             else { setKwSortBy('competition'); setKwSortAsc(false); }
                           }}
-                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
+                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap min-w-[115px]"
                         >
                           <div className="flex items-center gap-1.5">
                             <span className={kwSortBy === 'competition' ? 'text-blue-600 font-bold' : ''}>Competition</span>
@@ -731,7 +747,7 @@ export default function ToolsPage() {
                           </div>
                         </th>
 
-                        <th className="py-3.5 px-4 text-right">Action</th>
+                        <th className="py-3.5 px-4 text-right min-w-[65px]">Action</th>
                       </tr>
                     </thead>
 
@@ -873,22 +889,22 @@ export default function ToolsPage() {
 
           {/* ================= TAB 2: GOOGLE SERP & RANK CHECKER ================= */}
           {activeTab === 'serp' && (
-            <div className="space-y-8 animate-in fade-in duration-200">
+            <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-200">
               
               {/* SERP Check Form Card */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-900/5 space-y-6">
+              <div className="p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-900/5 space-y-5 sm:space-y-6">
                 
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-5 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 sm:gap-3 pb-4 sm:pb-5 border-b border-slate-100">
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
+                    <h2 className="text-lg sm:text-2xl font-bold text-slate-900 font-display">
                       Google SERP Rank &amp; Position Checker
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                       Check exactly where your website ranks in Google organic search results for any keyword.
                     </p>
                   </div>
 
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold font-mono">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold font-mono shrink-0">
                     <Target className="w-3.5 h-3.5" />
                     ACCURATE RANKING
                   </span>
@@ -896,11 +912,11 @@ export default function ToolsPage() {
 
                 <form
                   onSubmit={(e) => { e.preventDefault(); handleSerpCheck(); }}
-                  className="grid grid-cols-1 md:grid-cols-12 gap-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 sm:gap-4 items-end"
                 >
                   
                   {/* Website Domain */}
-                  <div className="md:col-span-4 space-y-1.5">
+                  <div className="sm:col-span-2 lg:col-span-3 xl:col-span-4 space-y-1.5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                       * Your Website Domain / URL
                     </label>
@@ -918,7 +934,7 @@ export default function ToolsPage() {
                   </div>
 
                   {/* Target Keyword */}
-                  <div className="md:col-span-4 space-y-1.5">
+                  <div className="sm:col-span-2 lg:col-span-3 xl:col-span-3 space-y-1.5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                       * Target Keyword to Check
                     </label>
@@ -928,19 +944,19 @@ export default function ToolsPage() {
                         type="text"
                         value={serpKeyword}
                         onChange={(e) => setSerpKeyword(e.target.value)}
-                        placeholder="e.g. white label seo, b2b ppc agency..."
+                        placeholder="e.g. white label seo, b2b ppc..."
                         className="w-full pl-10 pr-4 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-inner"
                         required
                       />
                     </div>
                   </div>
 
-                  {/* Country & Device */}
-                  <div className="md:col-span-4 space-y-1.5">
+                  {/* Region / Country */}
+                  <div className="sm:col-span-1 lg:col-span-3 xl:col-span-2 space-y-1.5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
-                      Region &amp; Device
+                      Google Region
                     </label>
-                    <div className="flex gap-2">
+                    <div className="relative">
                       <select
                         value={serpCountry}
                         onChange={(e) => {
@@ -948,15 +964,24 @@ export default function ToolsPage() {
                           setSerpCountry(val);
                           if (serpData) handleSerpCheck(serpDomain, serpKeyword, val, serpDevice);
                         }}
-                        className="flex-1 px-3 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer"
+                        className="w-full pl-3.5 pr-9 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer appearance-none"
                       >
-                        <option value="US">Google US (google.com)</option>
-                        <option value="UK">Google UK (google.co.uk)</option>
-                        <option value="CA">Google Canada (google.ca)</option>
-                        <option value="AU">Google Australia (google.com.au)</option>
-                        <option value="IN">Google India (google.co.in)</option>
+                        <option value="US">Google US (.com)</option>
+                        <option value="UK">Google UK (.co.uk)</option>
+                        <option value="CA">Google Canada (.ca)</option>
+                        <option value="AU">Google AU (.com.au)</option>
+                        <option value="IN">Google India (.co.in)</option>
                       </select>
+                      <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
+                  </div>
 
+                  {/* Device Toggle & Submit Action */}
+                  <div className="sm:col-span-1 lg:col-span-3 xl:col-span-3 space-y-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                      Device &amp; Search
+                    </label>
+                    <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => {
@@ -965,20 +990,33 @@ export default function ToolsPage() {
                           if (serpData) handleSerpCheck(serpDomain, serpKeyword, serpCountry, nextDev);
                         }}
                         title={`Device: ${serpDevice}`}
-                        className="px-3 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center border border-slate-200 transition-colors"
+                        className="h-12 px-3 sm:px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 flex items-center justify-center gap-1.5 border border-slate-200 transition-colors shrink-0 text-xs font-semibold"
                       >
-                        {serpDevice === 'desktop' ? <Laptop className="w-4 h-4" /> : <Smartphone className="w-4 h-4 text-blue-600" />}
+                        {serpDevice === 'desktop' ? (
+                          <>
+                            <Laptop className="w-4 h-4 text-blue-600" />
+                            <span className="hidden xl:inline">Desktop</span>
+                          </>
+                        ) : (
+                          <>
+                            <Smartphone className="w-4 h-4 text-blue-600" />
+                            <span className="hidden xl:inline">Mobile</span>
+                          </>
+                        )}
                       </button>
 
                       <button
                         type="submit"
                         disabled={serpLoading}
-                        className="px-5 h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg shadow-blue-600/25 flex items-center justify-center shrink-0 disabled:opacity-50"
+                        className="flex-1 h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 active:scale-[0.98]"
                       >
                         {serpLoading ? (
                           <RefreshCw className="w-4 h-4 animate-spin" />
                         ) : (
-                          <span>Check Rank</span>
+                          <>
+                            <span>Check Rank</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </>
                         )}
                       </button>
                     </div>
@@ -990,10 +1028,10 @@ export default function ToolsPage() {
 
               {/* SERP Diagnostic Results Display */}
               {serpData && (
-                <div className="space-y-6">
+                <div className="space-y-5 sm:space-y-6">
                   
                   {/* Rank Status Hero Banner */}
-                  <div className={`p-6 sm:p-8 rounded-3xl border shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 ${
+                  <div className={`p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border shadow-xl flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 ${
                     serpData.isRanked && (serpData.rankPosition || 0) <= 3
                       ? 'bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border-emerald-500/40 text-white'
                       : serpData.isRanked && (serpData.rankPosition || 0) <= 10
@@ -1003,8 +1041,8 @@ export default function ToolsPage() {
                       : 'bg-gradient-to-r from-slate-900 to-slate-950 border-white/20 text-white'
                   }`}>
                     
-                    <div className="flex items-center gap-5 text-center md:text-left">
-                      <div className={`w-20 h-20 rounded-2xl flex flex-col items-center justify-center border shadow-xl shrink-0 ${
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-center sm:text-left w-full md:w-auto">
+                      <div className={`w-18 h-18 sm:w-20 sm:h-20 rounded-2xl flex flex-col items-center justify-center border shadow-xl shrink-0 p-2 ${
                         serpData.isRanked && (serpData.rankPosition || 0) <= 3
                           ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300'
                           : serpData.isRanked && (serpData.rankPosition || 0) <= 10
@@ -1014,13 +1052,13 @@ export default function ToolsPage() {
                           : 'bg-rose-500/20 border-rose-400 text-rose-300'
                       }`}>
                         <span className="text-[10px] font-mono font-bold uppercase tracking-wider">RANK</span>
-                        <span className="text-3xl font-black tracking-tight leading-none mt-0.5">
+                        <span className="text-2xl sm:text-3xl font-black tracking-tight leading-none mt-0.5">
                           {serpData.isRanked ? `#${serpData.rankPosition}` : 'N/A'}
                         </span>
                       </div>
 
                       <div className="space-y-1">
-                        <div className="flex items-center gap-2 justify-center md:justify-start">
+                        <div className="flex items-center gap-2 justify-center sm:justify-start">
                           <span className="text-xs uppercase font-mono font-bold text-slate-300 tracking-wider">
                             Google Search Status
                           </span>
@@ -1028,7 +1066,7 @@ export default function ToolsPage() {
                             {serpData.isRanked ? `Page ${serpData.pageNumber}` : 'Not in Top 100'}
                           </span>
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-bold font-display">
+                        <h3 className="text-lg sm:text-2xl font-bold font-display break-all sm:break-normal">
                           {serpData.domain} for &ldquo;{serpData.keyword}&rdquo;
                         </h3>
                         <p className="text-xs text-slate-300">
@@ -1041,7 +1079,7 @@ export default function ToolsPage() {
                       href={serpData.searchUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs sm:text-sm font-semibold transition-all hover:-translate-y-0.5 shrink-0"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs sm:text-sm font-semibold transition-all hover:-translate-y-0.5 shrink-0"
                     >
                       <span>Open Live Google Search</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -1050,10 +1088,10 @@ export default function ToolsPage() {
                   </div>
 
                   {/* Google Snippet Preview & SERP Features */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
                     
                     {/* Live SERP Card Simulation */}
-                    <div className="lg:col-span-7 p-6 rounded-3xl bg-white border border-slate-200 shadow-lg space-y-4">
+                    <div className="lg:col-span-7 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-lg space-y-4">
                       <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                         <span className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
                           Google Search Result Preview
@@ -1065,9 +1103,9 @@ export default function ToolsPage() {
 
                       {/* Google Style Snippet */}
                       {serpData.targetResult ? (
-                        <div className="space-y-1.5 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                        <div className="space-y-1.5 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-200/80">
                           <div className="flex items-center gap-2 text-xs text-slate-600 font-sans truncate">
-                            <div className="w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center text-white text-[9px] font-bold">
+                            <div className="w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center text-white text-[9px] font-bold shrink-0">
                               G
                             </div>
                             <span className="truncate">{serpData.targetResult.url}</span>
@@ -1079,7 +1117,7 @@ export default function ToolsPage() {
                             {serpData.targetResult.snippet}
                           </p>
                           {serpData.targetResult.features && serpData.targetResult.features.length > 0 && (
-                            <div className="flex gap-2 pt-2">
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
                               {serpData.targetResult.features.map((f, i) => (
                                 <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold">
                                   {f}
@@ -1102,7 +1140,7 @@ export default function ToolsPage() {
                     </div>
 
                     {/* Detected SERP Features */}
-                    <div className="lg:col-span-5 p-6 rounded-3xl bg-white border border-slate-200 shadow-lg space-y-4">
+                    <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-lg space-y-4">
                       <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                         <span className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
                           SERP Features Detected
@@ -1140,8 +1178,8 @@ export default function ToolsPage() {
                   </div>
 
                   {/* Competitor Leaderboard Table */}
-                  <div className="rounded-3xl bg-white border border-slate-200 shadow-xl overflow-hidden">
-                    <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+                  <div className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-xl overflow-hidden">
+                    <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between">
                       <div>
                         <h3 className="text-base sm:text-lg font-bold text-slate-900">
                           Google Top 10 Competitor Leaderboard
@@ -1152,14 +1190,20 @@ export default function ToolsPage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto">
+                    {/* Mobile swipe hint */}
+                    <div className="md:hidden px-4 py-2 bg-blue-50/70 border-b border-blue-100/60 flex items-center justify-between text-[11px] text-blue-700 font-medium">
+                      <span>💡 Swipe table sideways to inspect competitor rankings</span>
+                      <span className="font-bold">→</span>
+                    </div>
+
+                    <div className="overflow-x-auto overscroll-x-contain">
                       <table className="w-full text-left text-xs sm:text-sm">
                         <thead>
                           <tr className="bg-slate-50 border-b border-slate-200 text-[11px] uppercase font-bold text-slate-500 font-mono tracking-wider">
-                            <th className="py-3.5 px-4 sm:px-6 w-20">Rank</th>
-                            <th className="py-3.5 px-4">Domain &amp; Title</th>
-                            <th className="py-3.5 px-4">URL</th>
-                            <th className="py-3.5 px-4 text-right">Status</th>
+                            <th className="py-3.5 px-4 sm:px-6 w-16 sm:w-20">Rank</th>
+                            <th className="py-3.5 px-4 min-w-[200px]">Domain &amp; Title</th>
+                            <th className="py-3.5 px-4 min-w-[200px]">URL</th>
+                            <th className="py-3.5 px-4 text-right min-w-[80px]">Status</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 font-medium text-slate-800">
@@ -1220,7 +1264,7 @@ export default function ToolsPage() {
                   </div>
 
                   {/* Conversion Proposal Card */}
-                  <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+                  <div className="p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 shadow-2xl">
                     <div className="space-y-1.5 text-center md:text-left">
                       <span className="text-xs uppercase font-mono font-bold text-blue-400 tracking-wider">
                         Dominate Organic Search &amp; AI Citations
@@ -1235,7 +1279,7 @@ export default function ToolsPage() {
 
                     <button
                       onClick={() => setDeckModalOpen(true)}
-                      className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-0.5 shrink-0 whitespace-nowrap flex items-center gap-2"
+                      className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-0.5 shrink-0 whitespace-nowrap flex items-center justify-center gap-2 active:scale-[0.98]"
                     >
                       <span>Claim Free SEO Strategy Audit</span>
                       <ArrowRight className="w-4 h-4" />
