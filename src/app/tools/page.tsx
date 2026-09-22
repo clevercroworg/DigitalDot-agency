@@ -89,7 +89,9 @@ export default function ToolsPage() {
   const [kwAvgCpc, setKwAvgCpc] = useState(0);
   const [kwCommercialRatio, setKwCommercialRatio] = useState(0);
   const [kwTableFilter, setKwTableFilter] = useState('');
-  const [kwSortBy, setKwSortBy] = useState<'volume' | 'cpcHigh' | 'competition'>('volume');
+  const [kwCompetitionFilter, setKwCompetitionFilter] = useState<'all' | 'Low' | 'Medium' | 'High'>('all');
+  const [kwIntentFilter, setKwIntentFilter] = useState<'all' | 'Commercial' | 'Transactional' | 'Informational'>('all');
+  const [kwSortBy, setKwSortBy] = useState<'volume' | 'cpcLow' | 'cpcHigh' | 'competition'>('volume');
   const [kwSortAsc, setKwSortAsc] = useState(false);
   const [copiedKw, setCopiedKw] = useState<string | null>(null);
 
@@ -108,12 +110,17 @@ export default function ToolsPage() {
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
       const tab = params.get('tab');
-      if (tab === 'serp') setActiveTab('serp');
+      if (tab === 'serp') {
+        setActiveTab('serp');
+        handleSerpCheck(undefined, q || undefined);
+      }
       if (q) {
         if (tab === 'serp') {
           setSerpKeyword(q);
         } else {
           setKwQuery(q);
+          handleKeywordSearch(q);
+          return;
         }
       }
     }
@@ -121,8 +128,15 @@ export default function ToolsPage() {
     handleKeywordSearch('best digital marketing agency');
   }, []);
 
-  const handleKeywordSearch = async (overrideQuery?: string) => {
-    const q = overrideQuery || kwQuery;
+  const handleKeywordSearch = async (
+    overrideQuery?: string,
+    overrideIndustry?: string,
+    overrideCountry?: string
+  ) => {
+    const q = overrideQuery !== undefined ? overrideQuery : kwQuery;
+    const ind = overrideIndustry !== undefined ? overrideIndustry : kwIndustry;
+    const ctry = overrideCountry !== undefined ? overrideCountry : kwCountry;
+
     if (!q.trim()) return;
     setKwLoading(true);
 
@@ -132,8 +146,8 @@ export default function ToolsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: q,
-          industry: kwIndustry,
-          country: kwCountry,
+          industry: ind,
+          country: ctry,
         }),
       });
 
@@ -151,8 +165,18 @@ export default function ToolsPage() {
     }
   };
 
-  const handleSerpCheck = async () => {
-    if (!serpDomain.trim() || !serpKeyword.trim()) return;
+  const handleSerpCheck = async (
+    overrideDomain?: string,
+    overrideKeyword?: string,
+    overrideCountry?: string,
+    overrideDevice?: 'desktop' | 'mobile'
+  ) => {
+    const dom = overrideDomain !== undefined ? overrideDomain : serpDomain;
+    const kw = overrideKeyword !== undefined ? overrideKeyword : serpKeyword;
+    const ctry = overrideCountry !== undefined ? overrideCountry : serpCountry;
+    const dev = overrideDevice !== undefined ? overrideDevice : serpDevice;
+
+    if (!dom.trim() || !kw.trim()) return;
     setSerpLoading(true);
 
     try {
@@ -160,10 +184,10 @@ export default function ToolsPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          domain: serpDomain,
-          keyword: serpKeyword,
-          country: serpCountry,
-          device: serpDevice,
+          domain: dom,
+          keyword: kw,
+          country: ctry,
+          device: dev,
         }),
       });
 
@@ -179,9 +203,10 @@ export default function ToolsPage() {
   };
 
   const downloadCsv = () => {
-    if (kwResults.length === 0) return;
+    const listToExport = filteredKeywords.length > 0 ? filteredKeywords : kwResults;
+    if (listToExport.length === 0) return;
     const headers = ['Keyword', 'Monthly Search Volume', 'Top of Page Bid Low (USD)', 'Top of Page Bid High (USD)', 'Competition', 'Intent'];
-    const rows = kwResults.map(k => [
+    const rows = listToExport.map(k => [
       `"${k.keyword.replace(/"/g, '""')}"`,
       k.searchVolume,
       `$${k.cpcLow.toFixed(2)}`,
@@ -208,12 +233,20 @@ export default function ToolsPage() {
 
   // Filtered and sorted keyword results
   const filteredKeywords = kwResults
-    .filter(k => k.keyword.toLowerCase().includes(kwTableFilter.toLowerCase()))
+    .filter(k => {
+      const matchesText = k.keyword.toLowerCase().includes(kwTableFilter.toLowerCase());
+      const matchesComp = kwCompetitionFilter === 'all' || k.competition === kwCompetitionFilter;
+      const matchesIntent = kwIntentFilter === 'all' || k.intent === kwIntentFilter;
+      return matchesText && matchesComp && matchesIntent;
+    })
     .sort((a, b) => {
       let valA: number = a.searchVolume;
       let valB: number = b.searchVolume;
 
-      if (kwSortBy === 'cpcHigh') {
+      if (kwSortBy === 'cpcLow') {
+        valA = a.cpcLow;
+        valB = b.cpcLow;
+      } else if (kwSortBy === 'cpcHigh') {
         valA = a.cpcHigh;
         valB = b.cpcHigh;
       } else if (kwSortBy === 'competition') {
@@ -318,7 +351,12 @@ export default function ToolsPage() {
                 </button>
 
                 <button
-                  onClick={() => setActiveTab('serp')}
+                  onClick={() => {
+                    setActiveTab('serp');
+                    if (!serpData && !serpLoading) {
+                      handleSerpCheck();
+                    }
+                  }}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                     activeTab === 'serp'
                       ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
@@ -392,7 +430,11 @@ export default function ToolsPage() {
                     </label>
                     <select
                       value={kwIndustry}
-                      onChange={(e) => setKwIndustry(e.target.value)}
+                      onChange={(e) => {
+                        const newInd = e.target.value;
+                        setKwIndustry(newInd);
+                        handleKeywordSearch(kwQuery, newInd, kwCountry);
+                      }}
                       className="w-full px-3.5 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer"
                     >
                       <option value="All Industries">All Industries</option>
@@ -414,7 +456,11 @@ export default function ToolsPage() {
                     <div className="flex gap-2">
                       <select
                         value={kwCountry}
-                        onChange={(e) => setKwCountry(e.target.value)}
+                        onChange={(e) => {
+                          const newCtry = e.target.value;
+                          setKwCountry(newCtry);
+                          handleKeywordSearch(kwQuery, kwIndustry, newCtry);
+                        }}
                         className="flex-1 px-3.5 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer"
                       >
                         <option value="US">United States (US)</option>
@@ -531,7 +577,7 @@ export default function ToolsPage() {
                       Keyword results for &ldquo;{kwQuery}&rdquo;
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      Showing {filteredKeywords.length} of {kwResults.length} keywords
+                      Showing {filteredKeywords.length} of {kwResults.length} keywords {filteredKeywords.length < kwResults.length ? '(filters active)' : ''}
                     </p>
                   </div>
 
@@ -543,7 +589,7 @@ export default function ToolsPage() {
                         type="text"
                         value={kwTableFilter}
                         onChange={(e) => setKwTableFilter(e.target.value)}
-                        placeholder="Filter keywords..."
+                        placeholder="Filter by keyword..."
                         className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-900 w-44"
                       />
                     </div>
@@ -557,6 +603,65 @@ export default function ToolsPage() {
                       <span>Download My Keywords (CSV)</span>
                     </button>
                   </div>
+                </div>
+
+                {/* Secondary Fast Filters: Competition, Intent & Reset */}
+                <div className="px-5 sm:px-6 py-2.5 bg-slate-50/80 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="flex flex-wrap items-center gap-4">
+                    {/* Competition Filter */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-semibold text-slate-500 font-mono uppercase text-[10px]">Competition:</span>
+                      <div className="inline-flex rounded-lg bg-slate-200/60 p-0.5">
+                        {(['all', 'Low', 'Medium', 'High'] as const).map((lvl) => (
+                          <button
+                            key={lvl}
+                            onClick={() => setKwCompetitionFilter(lvl)}
+                            className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all ${
+                              kwCompetitionFilter === lvl
+                                ? 'bg-white text-slate-900 shadow-sm'
+                                : 'text-slate-600 hover:text-slate-900'
+                            }`}
+                          >
+                            {lvl === 'all' ? 'All' : lvl}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Intent Filter */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-semibold text-slate-500 font-mono uppercase text-[10px]">Intent:</span>
+                      <div className="inline-flex rounded-lg bg-slate-200/60 p-0.5">
+                        {(['all', 'Commercial', 'Transactional', 'Informational'] as const).map((int) => (
+                          <button
+                            key={int}
+                            onClick={() => setKwIntentFilter(int)}
+                            className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all ${
+                              kwIntentFilter === int
+                                ? 'bg-white text-slate-900 shadow-sm'
+                                : 'text-slate-600 hover:text-slate-900'
+                            }`}
+                          >
+                            {int === 'all' ? 'All' : int}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reset Filters */}
+                  {(kwTableFilter || kwCompetitionFilter !== 'all' || kwIntentFilter !== 'all') && (
+                    <button
+                      onClick={() => {
+                        setKwTableFilter('');
+                        setKwCompetitionFilter('all');
+                        setKwIntentFilter('all');
+                      }}
+                      className="text-blue-600 hover:text-blue-700 font-semibold underline text-xs"
+                    >
+                      Clear all filters
+                    </button>
+                  )}
                 </div>
 
                 {/* Data Table */}
@@ -573,9 +678,26 @@ export default function ToolsPage() {
                           }}
                           className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
                         >
-                          <div className="flex items-center gap-1">
-                            <span>Search Volume</span>
-                            <span className="text-blue-600">▲</span>
+                          <div className="flex items-center gap-1.5">
+                            <span className={kwSortBy === 'volume' ? 'text-blue-600 font-bold' : ''}>Search volume</span>
+                            <span className={`text-[11px] ${kwSortBy === 'volume' ? 'text-blue-600 font-bold' : 'text-slate-400'}`}>
+                              {kwSortBy === 'volume' ? (kwSortAsc ? '▲' : '▼') : '↕'}
+                            </span>
+                          </div>
+                        </th>
+
+                        <th 
+                          onClick={() => {
+                            if (kwSortBy === 'cpcLow') setKwSortAsc(!kwSortAsc);
+                            else { setKwSortBy('cpcLow'); setKwSortAsc(true); }
+                          }}
+                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <span className={kwSortBy === 'cpcLow' ? 'text-blue-600 font-bold' : ''}>Top of page bid (low)</span>
+                            <span className={`text-[11px] ${kwSortBy === 'cpcLow' ? 'text-blue-600 font-bold' : 'text-slate-400'}`}>
+                              {kwSortBy === 'cpcLow' ? (kwSortAsc ? '▲' : '▼') : '↕'}
+                            </span>
                           </div>
                         </th>
 
@@ -586,20 +708,11 @@ export default function ToolsPage() {
                           }}
                           className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
                         >
-                          <div className="flex items-center gap-1">
-                            <span>Top of page bid (low)</span>
-                          </div>
-                        </th>
-
-                        <th 
-                          onClick={() => {
-                            if (kwSortBy === 'cpcHigh') setKwSortAsc(!kwSortAsc);
-                            else { setKwSortBy('cpcHigh'); setKwSortAsc(false); }
-                          }}
-                          className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
-                        >
-                          <div className="flex items-center gap-1">
-                            <span>Top of page bid (high)</span>
+                          <div className="flex items-center gap-1.5">
+                            <span className={kwSortBy === 'cpcHigh' ? 'text-blue-600 font-bold' : ''}>Top of page bid (high)</span>
+                            <span className={`text-[11px] ${kwSortBy === 'cpcHigh' ? 'text-blue-600 font-bold' : 'text-slate-400'}`}>
+                              {kwSortBy === 'cpcHigh' ? (kwSortAsc ? '▲' : '▼') : '↕'}
+                            </span>
                           </div>
                         </th>
 
@@ -610,9 +723,11 @@ export default function ToolsPage() {
                           }}
                           className="py-3.5 px-4 cursor-pointer hover:text-slate-900 select-none whitespace-nowrap"
                         >
-                          <div className="flex items-center gap-1">
-                            <span>Competition</span>
-                            <span className="text-blue-600">▲</span>
+                          <div className="flex items-center gap-1.5">
+                            <span className={kwSortBy === 'competition' ? 'text-blue-600 font-bold' : ''}>Competition</span>
+                            <span className={`text-[11px] ${kwSortBy === 'competition' ? 'text-blue-600 font-bold' : 'text-slate-400'}`}>
+                              {kwSortBy === 'competition' ? (kwSortAsc ? '▲' : '▼') : '↕'}
+                            </span>
                           </div>
                         </th>
 
@@ -700,8 +815,27 @@ export default function ToolsPage() {
 
                       {filteredKeywords.length === 0 && (
                         <tr>
-                          <td colSpan={6} className="py-12 text-center text-slate-400 text-sm">
-                            {kwLoading ? 'Analyzing search queries...' : 'No matching keywords found for this filter.'}
+                          <td colSpan={6} className="py-12 text-center text-slate-500 text-sm">
+                            {kwLoading ? (
+                              <div className="flex items-center justify-center gap-2 text-slate-500">
+                                <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />
+                                <span>Discovering live Google search queries...</span>
+                              </div>
+                            ) : (
+                              <div className="space-y-2">
+                                <p>No keywords match your active filter criteria.</p>
+                                <button
+                                  onClick={() => {
+                                    setKwTableFilter('');
+                                    setKwCompetitionFilter('all');
+                                    setKwIntentFilter('all');
+                                  }}
+                                  className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline"
+                                >
+                                  Reset active filters
+                                </button>
+                              </div>
+                            )}
                           </td>
                         </tr>
                       )}
@@ -809,7 +943,11 @@ export default function ToolsPage() {
                     <div className="flex gap-2">
                       <select
                         value={serpCountry}
-                        onChange={(e) => setSerpCountry(e.target.value)}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setSerpCountry(val);
+                          if (serpData) handleSerpCheck(serpDomain, serpKeyword, val, serpDevice);
+                        }}
                         className="flex-1 px-3 h-12 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all cursor-pointer"
                       >
                         <option value="US">Google US (google.com)</option>
@@ -821,7 +959,11 @@ export default function ToolsPage() {
 
                       <button
                         type="button"
-                        onClick={() => setSerpDevice(serpDevice === 'desktop' ? 'mobile' : 'desktop')}
+                        onClick={() => {
+                          const nextDev = serpDevice === 'desktop' ? 'mobile' : 'desktop';
+                          setSerpDevice(nextDev);
+                          if (serpData) handleSerpCheck(serpDomain, serpKeyword, serpCountry, nextDev);
+                        }}
                         title={`Device: ${serpDevice}`}
                         className="px-3 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center border border-slate-200 transition-colors"
                       >
